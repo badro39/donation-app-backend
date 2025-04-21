@@ -16,7 +16,7 @@ import donationRoute from "./api/donation.js";
 import webhookRoute from "./api/webhook.js";
 
 config();
-await connectDB()
+connectDB()
 
 // constants
 const app = express();

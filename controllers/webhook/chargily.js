@@ -10,12 +10,16 @@ const chargilyWebhook = async (req, res) => {
   const signature = req.get('signature');
   const payload = req.body.toString();
   const secret = process.env.CHARGILY_SECRET_KEY;
-  
+
   if (!secret) {
-    return res.sendStatus(500).json({message: "CHARGILY_WEBHOOK_SECRET is not set"});
+    return res
+      .sendStatus(500)
+      .json({ message: 'CHARGILY_WEBHOOK_SECRET is not set' });
   }
   if (!signature) {
-    return res.sendStatus(400).json({message: "No signature found in headers"});
+    return res
+      .sendStatus(400)
+      .json({ message: 'No signature found in headers' });
   }
 
   const computedSignature = crypto
@@ -29,7 +33,7 @@ const chargilyWebhook = async (req, res) => {
 
   try {
     const { type, data } = JSON.parse(payload);
-    
+
     const donationId = data?.metadata?.donationId;
     if (!donationId)
       return res
@@ -39,6 +43,7 @@ const chargilyWebhook = async (req, res) => {
     const donation = await Donation.findOne({ _id: donationId });
     if (type === 'checkout.paid') {
       donation.status = 'paid';
+      donation.donatedBy = data.payment_method;
     } else if (type === 'checkout.canceled') {
       donation.status = 'canceled';
     }

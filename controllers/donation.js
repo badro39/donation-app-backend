@@ -1,14 +1,13 @@
 import Donation from "../models/donation.js";
 
 export const addDonation = async (req, res, next) => {
-  const { name, email, amount, currency, donateWith, method } = req.body;
+  const { name, email, amount, currency, method } = req.body;
   
   try {
     const donation = await Donation.create({
       name,
       email,
       amount,
-      donateWith,
       currency,
       method,
     });

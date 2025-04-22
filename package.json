@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "donation app backend",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
     "build": "npx babel . --out-dir dist --ignore \"node_modules\"",
@@ -11,6 +12,7 @@
   "author": "Djaballah Badr",
   "license": "MIT",
   "dependencies": {
+    "@stripe/stripe-js": "^7.2.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",

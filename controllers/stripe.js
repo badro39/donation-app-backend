@@ -1,8 +1,18 @@
 import Stripe from 'stripe';
+import Donation from '../models/donation.js';
+import mongoose from 'mongoose';
 
 export const createCheckoutSession = async (req, res) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-  const {items, donationId} = req.body
+  const { items, donationId } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(donationId)) {
+    return res.status(400).json({ message: 'Invalid Donation ID format' });
+  }
+  const donation = await Donation.findOne({_id: donationId}).lean();
+  if (!donation) {
+    return res.status(404).json({ message: 'Invalid Donation ID' });
+  }
   
   try {
     const session = await stripe.checkout.sessions.create({
@@ -10,7 +20,7 @@ export const createCheckoutSession = async (req, res) => {
       mode: 'payment',
       line_items: items.map(({ amount, currency }) => ({
         price_data: {
-          currency: currency.toLowerCase(),
+          currency,
           unit_amount: amount, // amount in cents
           product_data: {
             name: 'donation',
@@ -19,14 +29,14 @@ export const createCheckoutSession = async (req, res) => {
         quantity: 1,
       })),
       metadata: {
-        donationId: donationId,
+        donationId,
       },
       success_url: `${process.env.FRONTEND_URL}/success`,
       cancel_url: `${process.env.FRONTEND_URL}/`,
     });
 
-    res.status(200).json({ sessionId: session.id });
+    return res.status(201).json({ sessionId: session.id });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 };

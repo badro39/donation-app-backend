@@ -14,6 +14,7 @@ import connectDB from './config/db.js';
 // routes
 import donationRoute from "./api/donation.js";
 import webhookRoute from "./api/webhook.js";
+import extraRoute from "./api/extra.js"
 
 config();
 connectDB()
@@ -27,7 +28,7 @@ const limiter = rateLimit({
 });
 const corsOptions = {
     origin: process.env.FRONTEND_URL,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST'],
     credentials: true,
 };
 
@@ -39,6 +40,7 @@ app.use(limiter);
 app.use("/webhook", webhookRoute)
 app.use(express.json());
 app.use("/", donationRoute);
+app.use("/extra", extraRoute)
 
 app.use(errorMiddleware);
 

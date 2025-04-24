@@ -7,6 +7,7 @@ import rateLimit from 'express-rate-limit';
 
 // middleware
 import errorMiddleware from './middleware/error.js';
+import sanitizeMiddleware from "./middleware/sanitize.js"
 
 // db connection
 import connectDB from './config/db.js';
@@ -39,6 +40,7 @@ app.use(limiter);
 
 app.use("/webhook", webhookRoute)
 app.use(express.json());
+app.use(sanitizeMiddleware)
 app.use("/", donationRoute);
 app.use("/extra", extraRoute)
 

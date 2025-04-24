@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 
 export const createCheckoutSession = async (req, res) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-  const { items, donationId } = req.body;
+  const { items, donationId } = req.sanitizedBody;
 
   if (!mongoose.Types.ObjectId.isValid(donationId)) {
     return res.status(400).json({ message: 'Invalid Donation ID format' });

@@ -8,7 +8,7 @@ const stripeWebhook = async (req, res) => {
   const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
   let event;
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(req.sanitizedBody, sig, endpointSecret);
   } catch (err) {
     return res.status(400).json({ message: `Webhook Error: ${err.message}` });
   }

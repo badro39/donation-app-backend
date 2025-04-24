@@ -1,7 +1,7 @@
 import Donation from "../models/donation.js";
 
 export const addDonation = async (req, res, next) => {
-  const { name, email, amount, currency, method } = req.body;
+  const { name, email, amount, currency, method } = req.sanitizedBody;
   
   try {
     const donation = await Donation.create({

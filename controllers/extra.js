@@ -1,5 +1,5 @@
 export const ChargilyPay = async (req, res, next) => {
-  const { amount, currency, donationId } = req.body;
+  const { amount, currency, donationId } = req.sanitizedBody;
   const url = process.env.CHARGILY_CHECKOUT_URL;
   const headers = {
     'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export const ChargilyPay = async (req, res, next) => {
 };
 
 export const StripePay = async (req, res) => {
-  const { amount, currency, donationId } = req.body;
+  const { amount, currency, donationId } = req.sanitizedBody;
 
   try {
     const response = await fetch(

@@ -23,7 +23,7 @@ router.post(
       .notEmpty()
       .isInt({ gt: 0 })
       .custom((value, { req, res }) => {
-        const { method } = req.body;
+        const { method } = req.sanitizedBody;
         if (method == 'chargily' && value < 75)
           return res.status(400).json({ message: 'min amount is 75' });
 

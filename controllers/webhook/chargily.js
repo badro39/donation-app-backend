@@ -8,7 +8,7 @@ const chargilyWebhook = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end();
 
   const signature = req.get('signature');
-  const payload = req.body.toString();
+  const payload = Buffer.from(req.body);
   const secret = process.env.CHARGILY_SECRET_KEY;
 
   if (!secret) {
@@ -22,12 +22,16 @@ const chargilyWebhook = async (req, res) => {
       .json({ message: 'No signature found in headers' });
   }
 
-  const computedSignature = crypto
-    .createHmac('sha256', secret)
-    .update(payload)
-    .digest('hex');
+  const computedSignatureBuffer = Buffer.from(
+    crypto.createHmac('sha256', secret).update(payload).digest('hex')
+  );
 
-  if (signature !== computedSignature) {
+  const signatureBuffer = Buffer.from(signature);
+
+  if (
+    signatureBuffer.length !== computedSignatureBuffer.length ||
+    !crypto.timingSafeEqual(signatureBuffer, computedSignatureBuffer)
+  ) {
     return res.status(403).json({ error: 'Invalid signature' });
   }
 

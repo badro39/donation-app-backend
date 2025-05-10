@@ -4,6 +4,7 @@ import cors from 'cors';
 import {config} from 'dotenv';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import csurf from 'csurf';
 
 // middleware
 import errorMiddleware from './middleware/error.js';
@@ -33,10 +34,20 @@ const corsOptions = {
     credentials: true,
 };
 
+const csrfProtection = csurf({ cookie: true });
+const Csurf = (req, res, next) => {
+  if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
+    csrfProtection(req, res, next);
+  } else {
+    next();
+  }
+}
+
 // middlewares
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use(limiter);
+app.use(Csurf)
 
 app.use("/webhook", webhookRoute)
 app.use(express.json());

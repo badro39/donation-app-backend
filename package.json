@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "donation app backend",
   "main": "index.js",
-  "type": "module",
+  
   "scripts": {
     "dev": "nodemon index.js",
     "build": "npx babel . --out-dir dist --ignore \"node_modules\"",

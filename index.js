@@ -47,7 +47,7 @@ const Csurf = (req, res, next) => {
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use(limiter);
-app.use(Csurf)
+//app.use(Csurf)
 
 app.use("/webhook", webhookRoute)
 app.use(express.json());

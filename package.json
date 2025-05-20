@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "donation app backend",
   "main": "index.js",
-  "type": "module",
   "jest": {
     "testEnvironment": "node",
     "setupFilesAfterEnv": [

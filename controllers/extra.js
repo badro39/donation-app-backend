@@ -35,8 +35,8 @@ export const ChargilyPay = async (req, res, next) => {
         .status(response.status)
         .json({ message: data.message || 'failed to create checkout session' });
 
-    const checkoutUrl = data.checkout_url;
-    return res.status(200).json({ checkoutUrl });
+    const checkoutUrl = data?.checkout_url;
+    return res.status(201).json({ checkoutUrl });
   } catch (err) {
     next(err);
   }
@@ -61,13 +61,13 @@ export const StripePay = async (req, res) => {
     );
 
     const data = await response.json();
-
+    console.log('data: ', data);
     if (!response.ok)
       return res
         .status(response.status)
         .json({ message: data.message || 'failed to create checkout session' });
 
-    return res.status(200).json({ sessionId: data.sessionId });
+    return res.status(201).json({ sessionId: data?.sessionId });
   } catch (err) {
     console.error(err);
   }

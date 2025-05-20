@@ -1,5 +1,5 @@
 //libs
-import express from 'express';
+import {Router} from 'express';
 
 // express-validator
 import { check } from 'express-validator';
@@ -9,8 +9,8 @@ import errorValidation from '../middleware/errorValidation.js';
 
 // controllers
 import { addDonation } from '../controllers/donation.js';
-import { createCheckoutSession } from '../controllers/stripe.js';
-const router = express.Router();
+import { createCheckoutSession } from '../controllers/stripeCheckoutSession.js';
+const router = Router();
 
 router.post(
   '/addDonation',

@@ -28,3 +28,7 @@
 
 
 
+
+.flaskenv*
+!.env.project
+!.env.vault
